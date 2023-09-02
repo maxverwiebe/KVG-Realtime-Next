@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# KVG Realtime Next.JS Web-App 🚀
 
-## Getting Started
+![GitHub stars](https://img.shields.io/github/stars/maxverwiebe/KVG-Realtime-Next?style=social)
+![GitHub forks](https://img.shields.io/github/forks/maxverwiebe/KVG-Realtime-Next?style=social)
+![GitHub issues](https://img.shields.io/github/issues/maxverwiebe/KVG-Realtime-Next)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/maxverwiebe/KVG-Realtime-Next)
+![License](https://img.shields.io/github/license/maxverwiebe/KVG-Realtime-Next)
 
-First, run the development server:
+> A modern website built with Next.js for visualizing realtime data of the "Kieler Verkehrsgesellschaft" (KVG).
+> WIP
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## 🌟 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Search for stations in Kiel by name
+- Save your favorite sations for easy access
+- See realtime data about departing busses from every station
+- Follow bus trips by seeing realtime trip data
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/maxverwiebe/KVG-Realtime-Next.git
+   ```
+...WIP...
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## 🤝 Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Contributions, issues, and feature requests are welcome!
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 📜 License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is [MIT](./LICENSE) licensed.
