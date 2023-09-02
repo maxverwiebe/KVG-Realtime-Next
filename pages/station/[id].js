@@ -132,7 +132,7 @@ function Page({ stationId }) {
                     {trip.patternText}
                   </div>
                   <div className="flex-grow">
-                    <Link href={`/trip/${trip.stationId}`} className="ml-2 text-gray-300">{trip.direction}</Link>
+                    <Link href={`/trip/${trip.tripId}`} className="ml-2 text-gray-300">{trip.direction}</Link>
                   </div>
                 <span
                     key={index}
