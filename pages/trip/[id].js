@@ -3,20 +3,23 @@ import { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import Link from 'next/link';
 
-function Page({apiData}) {
+function Page({tripId}) {
     const router = useRouter()
     const [stopList, setStopList] = useState([]);
     const [liveTripData, setLiveTripData] = useState([]);
     const [lastUpdate, setLastUpdate] = useState(0);
 
-    if (!apiData || !apiData.directionText) {
-      return (
-        <div class="m-4 font-regular block w-fill rounded-lg bg-red-500 p-4 text-base leading-5 text-white opacity-100">No trip found for id: {router.query.id}</div>
-      )
+    function getLastUpdate(unixTimestamp) {
+      const date = new Date(unixTimestamp * 1000);
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      
+      return `${hours}:${minutes}:${seconds}`;
     }
 
     const pullData = async () => {
-      const apiEndpoint = 'http://localhost:3000/api/gettripinfo?id=' + router.query.id;
+      const apiEndpoint = 'http://localhost:3000/api/gettripinfo?id=' + tripId;
       const headers = {
         'X-API-KEY': 'AAN-2D9-ZFV-23O-8SH',
       };
@@ -55,7 +58,7 @@ function Page({apiData}) {
         <div>
           <div className="lg:mx-auto lg:container p-4 border border-gray-500 rounded-lg shadow-lg bg-[#333333] m-2"> 
             <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-semibold text-gray-200">{router.query.id} {apiData.directionText}</h2>
+              <h2 className="text-3xl font-semibold text-gray-200">{tripId} {liveTripData.directionText}</h2>
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0"/>
             
@@ -95,6 +98,10 @@ function Page({apiData}) {
                     ))}                  
                 </ol>
 
+                <div class="bg-[#383838] rounded-lg shadow p-2 sticky">
+                  <p class="ml-1 text-gray-500">Last re-fetch: {getLastUpdate(lastUpdate)}</p>
+                </div>
+
             </div>
     
             </div>
@@ -104,27 +111,14 @@ function Page({apiData}) {
       );
 }
 
-export async function getServerSideProps(context) {
-    const apiEndpoint = 'http://localhost:3001/trips/get_trip/' + context.query.id;
-    const headers = {
-      'X-API-KEY': 'AAN-2D9-ZFV-23O-8SH',
-    };
-  
-    try {
-      const response = await fetch(apiEndpoint, { headers });
-      const apiData = await response.json();
-        
-      return {
-        props: {
-          apiData,
-        },
-      };
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return {
-        props: {},
-      };
-    }
-  }
+// We are using getServerSideProps to get the id, because the router object might be undefined in the page component if we - for example - reload the page.
+// We dont need it for data fetching, cuz we set up an interval-controlled query in the UI / Page component.
+export async function getServerSideProps({ params }) {
+  const tripId = params.id;
+
+  return {
+    props: { tripId },
+  };
+}
 
 export default Page;

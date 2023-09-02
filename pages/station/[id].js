@@ -16,14 +16,8 @@ function calculateDelay(startTime, endTime) {
     return delayInMinutes;
 }
 
-function Page({ apiData }) {
+function Page({ stationId }) {
   const router = useRouter();
-
-  if (!apiData || !apiData.stopName) {
-    return (
-      <div class="m-4 font-regular block w-fill rounded-lg bg-red-500 p-4 text-base leading-5 text-white opacity-100">No station found for id: {router.query.id}</div>
-    )
-  }
 
   const [cookieSet, setCookieSet] = useState(false);
   const [liveStationData, setLiveStationData] = useState([]);
@@ -40,7 +34,7 @@ function Page({ apiData }) {
 
   const pullData = async () => {
     console.log("Request")
-    const apiEndpoint = 'http://localhost:3000/api/getstopinfo?id=' + router.query.id;
+    const apiEndpoint = 'http://localhost:3000/api/getstopinfo?id=' + stationId;
     const headers = {
       'X-API-KEY': 'AAN-2D9-ZFV-23O-8SH',
     };
@@ -57,7 +51,7 @@ function Page({ apiData }) {
   }
 
   useEffect(() => {
-    const isCookieSet = Cookies.get(apiData.stopShortName) ? true : false;
+    const isCookieSet = Cookies.get(stationId) ? true : false;
     setCookieSet(isCookieSet);
 
     pullData()
@@ -68,14 +62,14 @@ function Page({ apiData }) {
   }, []);
 
   const handleCookieClick = () => {
-    if (Cookies.get(apiData.stopShortName)) {
-      Cookies.remove(apiData.stopShortName);
+    if (Cookies.get(liveStationData.stopShortName)) {
+      Cookies.remove(liveStationData.stopShortName);
       setCookieSet(false);
-      console.log("Cookie found, let's remove it! " + apiData.stopShortName);
+      console.log("Cookie found, let's remove it! " + liveStationData.stopShortName);
     } else {
-      Cookies.set(apiData.stopShortName, true);
+      Cookies.set(liveStationData.stopShortName, true);
       setCookieSet(true);
-      console.log("Cookie not found, let's add it! " + apiData.stopShortName);
+      console.log("Cookie not found, let's add it! " + liveStationData.stopShortName);
     }
   };
 
@@ -83,7 +77,7 @@ function Page({ apiData }) {
     <div>
       <div className="lg:mx-auto lg:container p-4 border border-gray-500 rounded-lg shadow-lg bg-[#333333] m-2"> 
         <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-semibold text-gray-200">{apiData.stopName}</h2>
+          <h2 className="text-3xl font-semibold text-gray-200">{liveStationData.stopName}</h2>
           <button class="ml-auto" onClick={handleCookieClick}>
               {cookieSet ?
                 <svg class="w-6 h-6 text-yellow-500 hover:text-yellow-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
@@ -97,7 +91,7 @@ function Page({ apiData }) {
           </button>
         </div>
         <div className="flex mt-3 flex-wrap">
-          {apiData.routes.map((route, index) =>   (
+          {liveStationData && liveStationData.routes && liveStationData.routes.map((route, index) =>   (
             <span
               key={index}
               className="bg-[#2D2C2D] text-[#FFCDD2] text-xs font-medium m-1 px-2.5 py-0.5 rounded border border-gray-500"
@@ -138,7 +132,7 @@ function Page({ apiData }) {
                     {trip.patternText}
                   </div>
                   <div className="flex-grow">
-                    <Link href={`/trip/${trip.tripId}`} className="ml-2 text-gray-300">{trip.direction}</Link>
+                    <Link href={`/trip/${trip.stationId}`} className="ml-2 text-gray-300">{trip.direction}</Link>
                   </div>
                 <span
                     key={index}
@@ -153,22 +147,6 @@ function Page({ apiData }) {
                         </p>
                     )}
                 </span>
-
-
-                <button data-popover-target={"popover-default" + index} type="button" class="bg-[#383838] font-medium rounded-lg text-sm px-2 text-center">
-                          
-                <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M15.133 10.632v-1.8a5.407 5.407 0 0 0-4.154-5.262.955.955 0 0 0 .021-.106V1.1a1 1 0 0 0-2 0v2.364a.944.944 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C4.867 13.018 3 13.614 3 14.807 3 15.4 3 16 3.538 16h12.924C17 16 17 15.4 17 14.807c0-1.193-1.867-1.789-1.867-4.175Zm-13.267-.8a1 1 0 0 1-1-1 9.424 9.424 0 0 1 2.517-6.39A1.001 1.001 0 1 1 4.854 3.8a7.431 7.431 0 0 0-1.988 5.037 1 1 0 0 1-1 .995Zm16.268 0a1 1 0 0 1-1-1A7.431 7.431 0 0 0 15.146 3.8a1 1 0 0 1 1.471-1.354 9.425 9.425 0 0 1 2.517 6.391 1 1 0 0 1-1 .995ZM6.823 17a3.453 3.453 0 0 0 6.354 0H6.823Z"/>
-                </svg>
-
-                </button>
-                <div data-popover id={"popover-default" + index} role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-300 transition-opacity duration-300 bg-[#2D2C2D] border border-gray-600 rounded-lg shadow-sm opacity-0 shadow">
-                    <div class="px-3 py-2">
-                        <p>Warning for {trip.patternText + " to " + trip.direction}:</p>
-                        <p>{"SHOW BLAH BLAH"}</p>
-                    </div>
-                    <div data-popper-arrow></div>
-                </div>
 
 
                 </div>
@@ -198,7 +176,7 @@ function Page({ apiData }) {
   );
 }
 
-export async function getServerSideProps(context) {
+/* export async function getServerSideProps(context) {
   const apiEndpoint = 'http://localhost:3001/stations/get_info/id/' + context.query.id;
   const headers = {
     'X-API-KEY': 'AAN-2D9-ZFV-23O-8SH',
@@ -219,6 +197,16 @@ export async function getServerSideProps(context) {
       props: {},
     };
   }
+} */
+
+// We are using getServerSideProps to get the id, because the router object might be undefined in the page component if we - for example - reload the page.
+// We dont need it for data fetching, cuz we set up an interval-controlled query in the UI / Page component.
+export async function getServerSideProps({ params }) {
+  const stationId = params.id;
+
+  return {
+    props: { stationId },
+  };
 }
 
 export default Page;
