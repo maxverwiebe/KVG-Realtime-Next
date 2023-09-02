@@ -16,6 +16,11 @@
 - See realtime data about departing busses from every station
 - Follow bus trips by seeing realtime trip data
 
+![alt text](https://raw.githubusercontent.com/maxverwiebe/KVG-Realtime-Next/main/_gitimages/img1.png?raw=true)
+![alt text](https://raw.githubusercontent.com/maxverwiebe/KVG-Realtime-Next/main/_gitimages/img2.png?raw=true)
+![alt text](https://raw.githubusercontent.com/maxverwiebe/KVG-Realtime-Next/main/_gitimages/img3.png?raw=true)
+
+
 ## 🚀 Getting Started
 
 1. Clone the repository:
