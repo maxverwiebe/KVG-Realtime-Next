@@ -1,5 +1,5 @@
 import React from 'react';
-import Searchbar from '../components/Searchbar';
+import Searchbar from '@/components/Searchbar';
 import FavoriteStations from '@/components/Favoritestations';
 const Home = () => {
   return (
