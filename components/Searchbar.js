@@ -28,7 +28,7 @@ function Searchbar() {
       <Combobox.Input
         onChange={(event) => handleQueryChange(event.target.value)}
         value={query}
-        className="w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffa1a1] bg-[#363535] text-gray-300"
+        className="w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#454545] bg-[#363535] text-gray-300"
         placeholder="Search for stations..."
       />
 

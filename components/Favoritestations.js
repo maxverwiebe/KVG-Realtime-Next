@@ -12,7 +12,7 @@ const FavoriteStations = () => {
   
       for (const key of cookieKeys) {
         if (/^\d{4}$/.test(key)) {
-          const response = await fetch(`http://localhost:3000/api/getstopinfo?id=${key}`);
+          const response = await fetch(window.location.origin + `/api/getstopinfo?id=${key}`);
           const stationData = await response.json();
           favoriteStationsData.push(stationData);
         }
