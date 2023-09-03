@@ -3,13 +3,10 @@ import fetch from 'node-fetch';
 export default async function handler(req, res) {
   const { id } = req.query;
 
-  const apiEndpoint = 'http://localhost:3001/stations/get_info/id/' + id
-  const headers = {
-    'X-API-KEY': 'AAN-2D9-ZFV-23O-8SH',
-  };
+  const apiEndpoint = `https://www.kvg-kiel.de/internetservice/services/passageInfo/stopPassages/stop?stop=${id}&mode=departure`
 
   try {
-    const response = await fetch(apiEndpoint, { headers });
+    const response = await fetch(apiEndpoint);
     const apiData = await response.json();
 
     res.status(200).json(apiData);
