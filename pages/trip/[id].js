@@ -19,10 +19,7 @@ function Page({tripId}) {
     }
 
     const pullData = async () => {
-      const apiEndpoint = 'http://localhost:3000/api/gettripinfo?id=' + tripId;
-      const headers = {
-        'X-API-KEY': 'AAN-2D9-ZFV-23O-8SH',
-      };
+      const apiEndpoint = window.location.origin  + '/api/gettripinfo?id=' + tripId;
   
       try {
         const response = await fetch(apiEndpoint);

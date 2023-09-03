@@ -34,10 +34,7 @@ function Page({ stationId }) {
 
   const pullData = async () => {
     console.log("Request")
-    const apiEndpoint = 'http://localhost:3000/api/getstopinfo?id=' + stationId;
-    const headers = {
-      'X-API-KEY': 'AAN-2D9-ZFV-23O-8SH',
-    };
+    const apiEndpoint = window.location.origin + '/api/getstopinfo?id=' + stationId;
 
     try {
       const response = await fetch(apiEndpoint);
