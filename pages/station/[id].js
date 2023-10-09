@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import Navbar from '../../components/Navbar';
-import Cookies from 'js-cookie';
 import Link from 'next/link';
 
 function calculateDelay(startTime, endTime) {
@@ -20,6 +18,7 @@ function Page({ stationId }) {
   const router = useRouter();
 
   const [cookieSet, setCookieSet] = useState(false);
+  const [favoriteStations, setFavoriteStations] = useState([]);
   const [liveStationData, setLiveStationData] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(0);
 
@@ -33,7 +32,6 @@ function Page({ stationId }) {
   }
 
   const pullData = async () => {
-    console.log("Request")
     const apiEndpoint = window.location.origin + '/api/getstopinfo?id=' + stationId;
 
     try {
@@ -48,8 +46,14 @@ function Page({ stationId }) {
   }
 
   useEffect(() => {
-    const isCookieSet = Cookies.get(stationId) ? true : false;
-    setCookieSet(isCookieSet);
+    let value = localStorage.getItem("favoriteStations") || ""
+    if (value === "") { 
+      setCookieSet(false) 
+    } else {
+      let array = (JSON.parse(value))
+      setFavoriteStations(array)
+      setCookieSet(array.includes(stationId.toString()));
+    }
 
     pullData()
     const interval = setInterval(() => {
@@ -59,14 +63,25 @@ function Page({ stationId }) {
   }, []);
 
   const handleCookieClick = () => {
-    if (Cookies.get(liveStationData.stopShortName)) {
-      Cookies.remove(liveStationData.stopShortName);
-      setCookieSet(false);
-      console.log("Cookie found, let's remove it! " + liveStationData.stopShortName);
+    if (cookieSet) {
+      let favoriteStations_ = favoriteStations
+      let index = favoriteStations_.indexOf(stationId.toString())
+      if (index > -1) {
+        favoriteStations_.splice(index, 1);
+      }
+
+      setFavoriteStations(favoriteStations_)
+      localStorage.setItem("favoriteStations", JSON.stringify(favoriteStations_))
+
+      setCookieSet(false)
     } else {
-      Cookies.set(liveStationData.stopShortName, true);
-      setCookieSet(true);
-      console.log("Cookie not found, let's add it! " + liveStationData.stopShortName);
+      var favoriteStations_ = favoriteStations
+      favoriteStations_.push(stationId.toString())
+      setFavoriteStations(favoriteStations_)
+      console.log(favoriteStations_)
+      localStorage.setItem("favoriteStations", JSON.stringify(favoriteStations_))
+
+      setCookieSet(true)
     }
   };
 

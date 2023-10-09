@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
 import Link from 'next/link';
 
 const FavoriteStations = () => {
@@ -8,11 +7,13 @@ const FavoriteStations = () => {
   useEffect(() => {
     const fetchData = async () => {
       const favoriteStationsData = [];
-      const cookieKeys = Object.keys(Cookies.get());
-  
-      for (const key of cookieKeys) {
-        if (/^\d{4}$/.test(key)) {
-          const response = await fetch(window.location.origin + `/api/getstopinfo?id=${key}`);
+
+      const favoriteStations = localStorage.getItem("favoriteStations") || ""
+      if (favoriteStations != "") {
+        const array = JSON.parse(favoriteStations)
+        
+        for (const id of array) {
+          const response = await fetch(window.location.origin + `/api/getstopinfo?id=${id}`);
           const stationData = await response.json();
           favoriteStationsData.push(stationData);
         }
@@ -38,14 +39,25 @@ const FavoriteStations = () => {
             <span class="sr-only">Loading...</span>
         </div>
       }
-
+      
       {favoriteStations.map((station, index) => (
         <Link href={`/station/${station.stopShortName}`} class="block w-full py-2 px-4 mb-2 border rounded-lg shadow bg-[#363535] border-gray-600 hover:bg-[#383838]">
           <h5 class="mb-2 text-2xl tracking-tight text-gray-200">{station.stopName || "Error fetching data..."}</h5>
-          <span class="bg-gray-400 text-gray-800 text-xs font-medium mr-2 px-2.5 rounded-full">
-            {station.actual && station.actual[0] ? `${station.actual[0].patternText} -> ${station.actual[0].direction}` : "No next trip found."}
-          </span>
-          <span class="text-gray-500 text-lg">...</span>
+          <div class="flex flex-wrap">
+          {station.actual &&
+            station.actual.slice(0, 3).map((trip) => (
+              <div class="flex items-center mb-2 bg-[#302f2f] rounded-lg p-2 mr-2">
+                <span class="bg-gray-400 text-gray-800 text-xs font-medium mr-2 px-2.5 rounded-full">
+                  <span class="text-lg font-bold">{trip.patternText}</span> {/* Größer und fett */}
+                </span>
+                <div class="flex flex-col">
+                  <span class="text-gray-400">{trip.direction}</span> {/* trip.direction */}
+                  <span class="text-gray-500 text-xs">{trip.actualTime}</span> {/* Abfahrtszeit Platzhalter */}
+                </div>
+              </div>
+            ))
+          }
+          </div>
         </Link>
       ))}
     </div>

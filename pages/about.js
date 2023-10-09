@@ -9,7 +9,7 @@ const About = () => {
             Welcome to the KVG-Tracker application – a modern website built with Next.js for visualizing real-time data of the "Kieler Verkehrsgesellschaft" (KVG).
           </p>
 
-          <div class="p-4 mt-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 bg-gray-800 text-blue-400" role="alert">
+          <div class="p-4 mt-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 bg-gray-800 text-blue-300" role="alert">
             <span class="font-medium">Information</span> We are not affiliated with KVG. This website was deployed for presentation purposes only and created for educational purposes.
         </div>
   

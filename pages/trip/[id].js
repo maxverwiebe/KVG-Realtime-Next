@@ -55,7 +55,7 @@ function Page({tripId}) {
         <div>
           <div className="lg:mx-auto lg:container p-4 border border-gray-500 rounded-lg shadow-lg bg-[#333333] m-2"> 
             <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-semibold text-gray-200">{tripId} {liveTripData.directionText}</h2>
+              <h2 className="text-3xl font-semibold text-gray-200">{liveTripData.routeName} {liveTripData.directionText}</h2>
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0"/>
             
