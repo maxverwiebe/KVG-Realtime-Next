@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 export default async function handler(req, res) {
   const { id } = req.query;
 
-  const apiEndpoint = `https://kvg-kiel.de/internetservice/services/tripInfo/tripPassages?tripId=${id}`
+  const apiEndpoint = `https://kvg-internetservice-proxy.p.networkteam.com/internetservice/services/tripInfo/tripPassages?tripId=${id}`
 
   try {
     const response = await fetch(apiEndpoint);

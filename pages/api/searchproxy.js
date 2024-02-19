@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const { character } = req.query;
 
   try {
-    const response = await fetch(`https://www.kvg-kiel.de/internetservice/services/lookup/stopsByCharacter?character=${character}`);
+    const response = await fetch(`https://kvg-internetservice-proxy.p.networkteam.com/internetservice/services/lookup/stopsByCharacter?character=${character}`);
     const data = await response.json();
     res.setHeader("Cache-Control", "public, max-age=3600")
     res.status(response.status).json(data);
